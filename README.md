@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 <p align="center">
-  <img src="https://github.com/AlfredoCamaraC/MDyn---Accelerated-Modal-Dynamics-Solver/blob/main/mdyn_logo.png" alt="" width="300">
+  <img src="https://github.com/AlfredoCamaraC/MDyn/blob/main/mdyn_logo.png" alt="" width="300">
 </p>
 
 # MDyn: Accelerated Modal Dynamics Solver
@@ -41,7 +41,7 @@ If you use MDyn in your research, please cite the following paper:
 ## Showcase
 
 <p align="center">
-  <img src="https://github.com/AlfredoCamaraC/MDyn---Accelerated-Modal-Dynamics-solver/blob/main/deformation_abaqus_MDyn.png" alt="" width="600">
+  <img src="https://github.com/AlfredoCamaraC/MDyn/blob/main/deformation_abaqus_MDyn.png" alt="" width="600">
 </p>
 <p align="center">
   Comparison between the deformation induced by a vehicle crossing the Queensferry Bridge (Scotland) using ABAQUS and MDyn.
@@ -51,7 +51,7 @@ If you use MDyn in your research, please cite the following paper:
 
 
 <p align="center">
-  <img src="https://github.com/AlfredoCamaraC/MDyn---Accelerated-Modal-Dynamics-Solver/blob/main/MDyn_LQS_resultsTMD.gif" width="800">
+  <img src="https://github.com/AlfredoCamaraC/MDyn/blob/main/MDyn_LQS_resultsTMD.gif" width="800">
 </p>
 <p align="center">
   Linear quasi-steady analysis of the wind-induced response in a footbridge with a TMD at the centre.
@@ -60,14 +60,14 @@ If you use MDyn in your research, please cite the following paper:
 <br>
 
 <p align="center">
-  <img src="https://github.com/AlfredoCamaraC/MDyn---Accelerated-Modal-Dynamics-Solver/blob/main/MDyn_resonant_pedestrian_footbridge.gif" width="800">
+  <img src="https://github.com/AlfredoCamaraC/MDyn/blob/main/MDyn_resonant_pedestrian_footbridge.gif" width="800">
 </p>
 <p align="center">
   Vibration of a footbridge under the action of a resonant pedestrian.
 </p>
 
 <p align="center">
-  <img src="https://github.com/AlfredoCamaraC/MDyn---Accelerated-Modal-Dynamics-solver/blob/main/displacements_footbridge_resonance.png" alt="" width="600">
+  <img src="https://github.com/AlfredoCamaraC/MDyn/blob/main/displacements_footbridge_resonance.png" alt="" width="600">
 </p>
 <p align="center">
 Vertical displacement at midspan</p>
