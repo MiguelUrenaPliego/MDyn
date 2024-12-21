@@ -10,7 +10,7 @@ MDyn is a fast modal superposition analysis software highly vectorised in Python
 The running codes are fully commented and should be easy to navigate, but tutorials are on the way.
 
 ## Instalation
-No instalation is needed (beyond some standard Python libraries like numpy, scipy, matplotlib). The subfolder "code" needs to be in the working directory when running the main python script.
+No instalation is needed (beyond some standard Python libraries like numpy, scipy, matplotlib). The subfolder "code" needs to be in the parent directory when running the main python script in the working sub-directory, as it is structured here.
 
 ## Accompanying Papers
 Please refer to the paper (https://doi.org/10.1016/j.advengsoft.2020.102934) for details of the MDyn solver, validation, and more information about the library.
