@@ -71,3 +71,12 @@ If you use MDyn in your research, please cite the following paper:
 </p>
 <p align="center">
 Vertical displacement at midspan</p>
+
+<br>
+
+<p align="center">
+  <img src="https://github.com/AlfredoCamaraC/MDyn/blob/main/assets/nearly_resonant_harmonic_load_building.gif" width="800">
+</p>
+<p align="center">
+  Response of a building frame subject to a nearly resonant harmonic force.
+</p>
