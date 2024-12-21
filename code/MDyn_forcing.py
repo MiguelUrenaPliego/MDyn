@@ -179,12 +179,13 @@ class HarmonicLoads():
         self.NodeHarmonicLoad = kwargs.get("NodeHarmonicLoad")
         self.DofHarmonicLoad = kwargs.get("DofHarmonicLoad")
 
-    def harmonicFixedLoad(self,time,P):
+    def harmonicFixedLoad(self,time,P,dl):
 
-        for dl in range(len(self.PHarmonicLoad)):		 # Loop in loads
-            index0=np.where(self.NodeNumber==self.NodeHarmonicLoad[dl])[0][0]
-            P[(self.NumberOfNodes*(self.DofHarmonicLoad[dl]-1))+index0] = self.PHarmonicLoad[dl]*np.sin(self.wHarmonicLoad[dl]*time)
-        return P
+        #for dl in range(len(self.PHarmonicLoad)):		 # Loop in loads
+        index0=np.where(self.NodeNumber==self.NodeHarmonicLoad[dl])[0][0]
+        loadAmplitude = self.PHarmonicLoad[dl]*np.sin(self.wHarmonicLoad[dl]*time)
+        P[(self.NumberOfNodes*(self.DofHarmonicLoad[dl]-1))+index0] = loadAmplitude
+        return [P,loadAmplitude]
 
 
 class WindLoads():

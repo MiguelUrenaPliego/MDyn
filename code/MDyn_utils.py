@@ -508,6 +508,124 @@ class PlotModel():
 		plt.close()
 
 
+
+	def plotDeformedStructureLoads(self,it,t,r,LoadAmplitude,maxLoad,xyzLoad,DofLoad):
+		"""
+		xyzLoad is a array with 3x1 arrays that contain the xyz coord of the loads
+		DofLoad is an array with the DOF of each load
+		"""
+		ux = r[:self.NumberOfNodes]
+		uy = r[self.NumberOfNodes:self.NumberOfNodes*2]
+		uz = r[self.NumberOfNodes*2:self.NumberOfNodes*3]
+		urx = r[self.NumberOfNodes*3:self.NumberOfNodes*4]
+		urx = urx*self.scaleFactorAnimation
+
+		# force vector
+		LoadAmplitudeNorm = LoadAmplitude*(self.dimensionPlot*0.2)/maxLoad
+		arrowDimension = self.dimensionPlot/50
+
+		NodeXdef = self.NodeX+ux*self.scaleFactorAnimation
+		NodeYdef = self.NodeY+uy*self.scaleFactorAnimation
+		NodeZdef = self.NodeZ+uz*self.scaleFactorAnimation
+
+		#ax = self.prepare_fig()
+		fig = plt.figure()
+		ax = fig.add_subplot(projection='3d')
+		ax.set_box_aspect((self.xdimEstimate, self.ydimEstimate, self.zdimEstimate))  # aspect ratio is 1:1:1 in data space
+		#ax.set_zlim(-1, 1)
+		NodeNumberCList = list(self.NodeNumber)
+		for i in range(len(self.BeamNode1)):
+			Node1 = self.BeamNode1[i]
+			Node2 = self.BeamNode2[i]
+			orderNode1 = NodeNumberCList.index(Node1)
+			orderNode2 = NodeNumberCList.index(Node2)
+			x = [NodeXdef[orderNode1],NodeXdef[orderNode2]]
+			y = [NodeYdef[orderNode1],NodeYdef[orderNode2]]
+			z = [NodeZdef[orderNode1],NodeZdef[orderNode2]]
+			ax.plot(x, y, z, c='tab:blue', linewidth=1)
+
+		for i in range(len(LoadAmplitudeNorm)): # loop in loads
+			xload = xyzLoad[i][0]
+			yload = xyzLoad[i][1]
+			zload = xyzLoad[i][2]
+
+			if DofLoad[i] == 1:		# X load
+				x = [xload,xload-LoadAmplitudeNorm[i]]
+				y = [yload,yload]
+				z = [zload,zload]
+				xa1 = [xload,xload-arrowDimension]
+				ya1 = [yload,yload]
+				za1 = [zload,zload-arrowDimension]
+				xa2 = [xload,xload-arrowDimension]
+				ya2 = [yload,yload]
+				za2 = [zload,zload+arrowDimension]
+				xa3 = [xload-arrowDimension,xload-arrowDimension]
+				ya3 = [yload,yload]
+				za3 = [zload-arrowDimension,zload+arrowDimension]
+			elif DofLoad[i] == 2:	# Y load
+				x = [xload,xload]
+				y = [yload,yload-LoadAmplitudeNorm[i]]
+				z = [zload,zload]
+				xa1 = [xload,xload-arrowDimension]
+				ya1 = [yload,yload-arrowDimension]
+				za1 = [zload,zload]
+				xa2 = [xload,xload+arrowDimension]
+				ya2 = [yload,yload-arrowDimension]
+				za2 = [zload,zload]
+				xa3 = [xload-arrowDimension,xload+arrowDimension]
+				ya3 = [yload-arrowDimension,yload-arrowDimension]
+				za3 = [zload,zload]
+			elif DofLoad[i] == 3:		# Z load
+				x = [xload,xload]
+				y = [yload,yload]
+				z = [zload,zload-LoadAmplitudeNorm[i]]
+				xa1 = [xload,xload-arrowDimension]
+				ya1 = [yload,yload]
+				za1 = [zload,zload+arrowDimension]
+				xa2 = [xload,xload+arrowDimension]
+				ya2 = [yload,yload]
+				za2 = [zload,zload+arrowDimension]
+				xa3 = [xload-arrowDimension,xload+arrowDimension]
+				ya3 = [yload,yload]
+				za3 = [zload+arrowDimension,zload+arrowDimension]
+
+			# line
+			ax.plot(x, y, z, c='tab:red', linewidth=1)
+			# arrow head
+			ax.plot(xa1,ya1,za1, c='tab:red', linewidth=1)
+			ax.plot(xa2,ya2,za2, c='tab:red', linewidth=1)
+			ax.plot(xa3,ya3,za3, c='tab:red', linewidth=1)
+
+
+		# Setting the axes properties
+		if min(self.NodeX) != max(self.NodeX):
+			ax.set(xlim3d=(min(self.NodeX)*1.2, max(self.NodeX)*1.2))
+		else:
+			ax.set(xlim3d=(-1*self.dimensionPlot/10, self.dimensionPlot/10))
+		if min(self.NodeY) != max(self.NodeY):
+			ax.set(ylim3d=(min(self.NodeY)*1.2, max(self.NodeY)*1.2))
+		else:
+			ax.set(ylim3d=(-1*self.dimensionPlot/10, self.dimensionPlot/10))
+		if min(self.NodeZ) != max(self.NodeZ):
+			ax.set(zlim3d=(min(self.NodeZ)*1.2, max(self.NodeZ)*1.2))
+		else:
+			ax.set(zlim3d=(-1*self.dimensionPlot/10, self.dimensionPlot/10))
+
+		ax.title.set_text('Deformation scale factor: '+str(round(self.scaleFactorAnimation,1)))
+		ax.text(max(self.NodeX)*1.1, min(self.NodeY)*1.1, min(self.NodeZ)*1.1, 't = '+str(round(t,2))+'s')
+		ax.set_axis_off()
+		#plt.show()
+		results_dir = os.path.join(self.script_dir, self.caseName+"/deformation_animation/")
+		if not os.path.isdir(results_dir):
+			os.makedirs(results_dir)
+		filename = 'deformation_iteration_'+str(it)+'.png'#, bbox_inches = None)
+		plt.savefig(results_dir + filename)
+		plt.close()
+
+
+
+
+
 	def createAnimation(self,filenamesAnimation,durationAnimation,removeAnimationFigures):
 		animation_dir = os.path.join(self.script_dir, self.caseName+"/deformation_animation/")
 		images = [ ]
