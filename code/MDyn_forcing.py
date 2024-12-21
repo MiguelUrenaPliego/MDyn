@@ -148,8 +148,12 @@ class MovingLoads():
             # Torsional moments
             Ptemp[(self.NumberOfNodes*self.indexDOFMoment)+ks] = MNode1
             Ptemp[(self.NumberOfNodes*self.indexDOFMoment)+ks+1] = MNode2
+            ret = [Ptemp,Fp]
 
-        return Ptemp
+        else:
+            ret = [0,0]
+
+        return ret
 
 class HarmonicLoads():
 

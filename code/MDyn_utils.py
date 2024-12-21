@@ -409,6 +409,103 @@ class PlotModel():
 		plt.savefig(results_dir + filename)
 		plt.close()
 
+	def plotDeformedStructureSectionLoads(self,it,t,r,LoadAmplitude,maxLoad,xyCGVehiclev,showPlotSection,plotSectionNodes):
+		ux = r[:self.NumberOfNodes]
+		uy = r[self.NumberOfNodes:self.NumberOfNodes*2]
+		uz = r[self.NumberOfNodes*2:self.NumberOfNodes*3]
+		urx = r[self.NumberOfNodes*3:self.NumberOfNodes*4]
+		urx = urx*self.scaleFactorAnimation
+
+		# force vector
+		LoadAmplitudeNorm = LoadAmplitude*(self.dimensionPlot*0.2)/maxLoad
+		arrowDimension = self.dimensionPlot/50
+
+		NodeXdef = self.NodeX+ux*self.scaleFactorAnimation
+		NodeYdef = self.NodeY+uy*self.scaleFactorAnimation
+		NodeZdef = self.NodeZ+uz*self.scaleFactorAnimation
+
+		#ax = self.prepare_fig()
+		fig = plt.figure()
+		ax = fig.add_subplot(projection='3d')
+		ax.set_box_aspect((self.xdimEstimate, self.ydimEstimate, self.zdimEstimate))  # aspect ratio is 1:1:1 in data space
+		#ax.set_zlim(-1, 1)
+		NodeNumberCList = list(self.NodeNumber)
+		for i in range(len(self.BeamNode1)):
+			Node1 = self.BeamNode1[i]
+			Node2 = self.BeamNode2[i]
+			orderNode1 = NodeNumberCList.index(Node1)
+			orderNode2 = NodeNumberCList.index(Node2)
+			x = [NodeXdef[orderNode1],NodeXdef[orderNode2]]
+			y = [NodeYdef[orderNode1],NodeYdef[orderNode2]]
+			z = [NodeZdef[orderNode1],NodeZdef[orderNode2]]
+			ax.plot(x, y, z, c='tab:blue', linewidth=1)
+		for i in range(len(self.NodeX)):
+			if self.NodeNumber[i] in plotSectionNodes:
+				x = [NodeXdef[i],NodeXdef[i]]
+				for j in range(len(showPlotSection)-1):
+					ypoint1BeforeRotation = showPlotSection[j][0]+NodeYdef[i]
+					ypoint2BeforeRotation = showPlotSection[j+1][0]+NodeYdef[i]
+					zpoint1BeforeRotation = showPlotSection[j][1]+NodeZdef[i]
+					zpoint2BeforeRotation = showPlotSection[j+1][1]+NodeZdef[i]
+					ypoint1 = ypoint1BeforeRotation*np.cos(urx[i]) - zpoint1BeforeRotation*np.sin(urx[i])
+					zpoint1 = zpoint1BeforeRotation*np.cos(urx[i]) + ypoint1BeforeRotation*np.sin(urx[i])
+					ypoint2 = ypoint2BeforeRotation*np.cos(urx[i]) - zpoint2BeforeRotation*np.sin(urx[i])
+					zpoint2 = zpoint2BeforeRotation*np.cos(urx[i]) + ypoint2BeforeRotation*np.sin(urx[i])
+					y = [ypoint1,ypoint2]
+					z = [zpoint1,zpoint2]
+					ax.plot(x, y, z, c='tab:blue', linewidth=0.75)
+
+				ypoint1BeforeRotation = showPlotSection[-1][0]+NodeYdef[i]
+				ypoint2BeforeRotation = showPlotSection[0][0]+NodeYdef[i]
+				zpoint1BeforeRotation = showPlotSection[-1][1]+NodeZdef[i]
+				zpoint2BeforeRotation = showPlotSection[0][1]+NodeZdef[i]
+				ypoint1 = ypoint1BeforeRotation*np.cos(urx[i]) - zpoint1BeforeRotation*np.sin(urx[i])
+				zpoint1 = zpoint1BeforeRotation*np.cos(urx[i]) + ypoint1BeforeRotation*np.sin(urx[i])
+				ypoint2 = ypoint2BeforeRotation*np.cos(urx[i]) - zpoint2BeforeRotation*np.sin(urx[i])
+				zpoint2 = zpoint2BeforeRotation*np.cos(urx[i]) + ypoint2BeforeRotation*np.sin(urx[i])
+				y = [ypoint1,ypoint2]
+				z = [zpoint1,zpoint2]
+
+				ax.plot(x, y, z, c='tab:blue', linewidth=0.75)
+
+		for i in range(len(LoadAmplitudeNorm)): # loop in loads
+			XCGVehicle0 = xyCGVehiclev[i][0]
+			YCGVehicle0 = xyCGVehiclev[i][1]
+			x = [XCGVehicle0,XCGVehicle0]
+			y = [YCGVehicle0,YCGVehicle0]
+			z = [0,-LoadAmplitudeNorm[i]]
+			# line
+			ax.plot(x, y, z, c='tab:red', linewidth=1)
+			# arrow head
+			ax.plot([XCGVehicle0,XCGVehicle0+arrowDimension], y, [0,arrowDimension*1.2], c='tab:red', linewidth=1)
+			ax.plot([XCGVehicle0,XCGVehicle0-arrowDimension], y, [0,arrowDimension*1.2], c='tab:red', linewidth=1)
+			ax.plot([XCGVehicle0-arrowDimension,XCGVehicle0+arrowDimension], y, [arrowDimension*1.2,arrowDimension*1.2], c='tab:red', linewidth=1)
+
+
+		# Setting the axes properties
+		if min(self.NodeX) != max(self.NodeX):
+			ax.set(xlim3d=(min(self.NodeX)*1.2, max(self.NodeX)*1.2))
+		else:
+			ax.set(xlim3d=(-1*self.dimensionPlot/10, self.dimensionPlot/10))
+		if min(self.NodeY) != max(self.NodeY):
+			ax.set(ylim3d=(min(self.NodeY)*1.2, max(self.NodeY)*1.2))
+		else:
+			ax.set(ylim3d=(-1*self.dimensionPlot/10, self.dimensionPlot/10))
+		if min(self.NodeZ) != max(self.NodeZ):
+			ax.set(zlim3d=(min(self.NodeZ)*1.2, max(self.NodeZ)*1.2))
+		else:
+			ax.set(zlim3d=(-1*self.dimensionPlot/10, self.dimensionPlot/10))
+
+		ax.title.set_text('Deformation scale factor: '+str(round(self.scaleFactorAnimation,1)))
+		ax.text(max(self.NodeX)*1.1, min(self.NodeY)*1.1, min(self.NodeZ)*1.1, 't = '+str(round(t,2))+'s')
+		ax.set_axis_off()
+		#plt.show()
+		results_dir = os.path.join(self.script_dir, self.caseName+"/deformation_animation/")
+		if not os.path.isdir(results_dir):
+			os.makedirs(results_dir)
+		filename = 'deformation_iteration_'+str(it)+'.png'#, bbox_inches = None)
+		plt.savefig(results_dir + filename)
+		plt.close()
 
 
 	def createAnimation(self,filenamesAnimation,durationAnimation,removeAnimationFigures):
