@@ -17,7 +17,7 @@ from tqdm import tqdm
 import sys
 import os
 
-sys.path.append('..\code')
+
 from MDyn.forcing import *
 from MDyn.utils import *
 from MDyn.solver import *
