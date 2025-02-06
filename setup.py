@@ -14,7 +14,7 @@ setup(
     install_requires=[
         "numpy>=2.0.0",
         "matplotlib>=3.0.0",
-        "scipy>=1.0.0",
+        "scipy>=0.18.1",
         "imageio>=2.0.0",
     ],
     classifiers=[
