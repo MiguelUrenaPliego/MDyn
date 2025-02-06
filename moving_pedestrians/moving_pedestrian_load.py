@@ -18,10 +18,10 @@ import sys
 import os
 
 sys.path.append('..\code')
-from MDyn_forcing import *
-from MDyn_utils import *
-from MDyn_solver import *
-from MDyn_vibsystems import *
+from MDyn.forcing import *
+from MDyn.utils import *
+from MDyn.solver import *
+from MDyn.vibsystems import *
 
 
 
