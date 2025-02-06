@@ -4,8 +4,8 @@ Created by Alfredo Camara Casado
 For extra capabilities of the code, code development, and bug reporting please contact the author at: acamara@ciccp.es
 """
 
-from .MDyn_solver import *
-from .MDyn_utils import *
+from .solver import *
+from .utils import *
 
 import numpy as np
 from scipy.interpolate import interp1d
