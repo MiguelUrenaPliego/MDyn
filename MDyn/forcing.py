@@ -13,7 +13,7 @@ from scipy.signal import convolve
 
 #from scipy.interpolate import RegularGridInterpolator
 from scipy.integrate import odeint
-from scipy.integrate import simps
+from scipy.integrate import simpson
 from scipy import integrate
 
 #import time
