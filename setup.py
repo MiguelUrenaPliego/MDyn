@@ -16,6 +16,7 @@ setup(
         "matplotlib>=3.0.0",
         "scipy>=0.18.1",
         "imageio>=2.0.0",
+        "tqdm>=4.0.0"
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
